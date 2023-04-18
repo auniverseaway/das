@@ -7,7 +7,7 @@ const app = new Hono();
 
 app.use('/*', cors());
 
-app.get('/browse', async (c) => {
+app.get('/api/list', async (c) => {
   const parent = c.req.query('pathname') || '';
   const prefix = parent === '/' ? 'content/' : `content${parent}/`;
   const opts = { prefix, delimiter: '/' };
@@ -33,11 +33,12 @@ app.put('/content/*', async (c) => {
   return c.json(item);
 });
 
-app.get('/edit/*', async (c) => {
+app.get('/*', async (c) => {
   const { path } = c.req;
   const key = `content${path}.html`;
   const obj = await c.env.DAS_BUCKET.get(key);
-  return c.html(obj.body);
+  if (obj) return c.html(obj.body);
+  return c.html('');
 });
 
 export default app;

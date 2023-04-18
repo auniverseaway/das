@@ -11,6 +11,7 @@ export default function getItems(listed) {
   });
 
   const files = objects.reduce((acc, obj) => {
+    console.log(obj);
     const pathArr = obj.key.split('/');
     const filename = pathArr.pop();
 
