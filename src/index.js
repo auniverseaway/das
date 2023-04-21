@@ -33,8 +33,13 @@ app.put('/content/*', async (c) => {
   return c.json(item);
 });
 
+app.get('/jens', async (c) => {
+  return c.html('<h1>Hi Jens</h1>');
+});
+
 app.get('/*', async (c) => {
-  const { path } = c.req;
+  let { path } = c.req;
+  path = path === '/' ? '/index' : path;
   const key = `content${path}.html`;
   const obj = await c.env.DAS_BUCKET.get(key);
   if (obj) return c.html(obj.body);
