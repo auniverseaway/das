@@ -23,7 +23,9 @@ app.put('/content/*', async (c) => {
   const results = await c.env.DAS_BUCKET.put(key, c.req.body);
 
   const pathArr = path.split('/');
-  const name = pathArr.pop();
+  let name = pathArr.pop();
+  name = isFile ? name.split('.')[0] : name;
+
   pathArr.shift();
   const parent = `/${pathArr.join('/')}`;
 
