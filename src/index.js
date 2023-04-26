@@ -35,10 +35,6 @@ app.put('/content/*', async (c) => {
   return c.json(item);
 });
 
-app.get('/jens', async (c) => {
-  return c.html('<h1>Hi Jens</h1>');
-});
-
 app.get('/*', async (c) => {
   let { path } = c.req;
   path = path === '/' ? '/index' : path;
