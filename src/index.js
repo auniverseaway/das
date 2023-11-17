@@ -16,6 +16,13 @@ app.get('/api/list', async (c) => {
   return c.json(items);
 });
 
+app.get('/api/version', async (c) => {
+  const key = `content/test.html`;
+  const opts = { versions: true };
+  const obj = await c.env.DAS_BUCKET.get(key, opts);
+  return c.json(obj);
+});
+
 app.put('/content/*', async (c) => {
   const path = c.req.path.slice(1);
   const isFile = path.endsWith('.html');
@@ -37,9 +44,15 @@ app.put('/content/*', async (c) => {
 
 app.get('/*', async (c) => {
   const { path } = c.req;
-  const key = `content${path}.html`;
+  const ext = path.split('/').pop().split('.')[1];
+  const key = ext ? `content${path}` : `content${path}.html`;
   const obj = await c.env.DAS_BUCKET.get(key);
-  if (obj) return c.html(obj.body);
+  if (obj) {
+    const { contentType } = obj.httpMetadata;
+    c.header('Content-Type', contentType);
+    if (contentType === 'text/html') return c.html(obj.body);
+    return c.body(obj.body);
+  }
   return c.html('');
 });
 
