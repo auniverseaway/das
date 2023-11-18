@@ -19,7 +19,6 @@ app.put('/*', async (c) => {
   let name = pathArr.pop();
   name = isPage ? name.split('.')[0] : name;
 
-  pathArr.shift();
   const parent = `/${pathArr.join('/')}`;
 
   const type = isPage ? 'file' : 'folder';
