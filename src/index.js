@@ -11,13 +11,12 @@ app.use('/*', cors());
 
 app.put('/*', async (c) => {
   const path = c.req.path.slice(1);
-  const isPage = path.endsWith('.html');
-  const key = isPage ? path : `${path}/.das`;
-  const results = await c.env.DAS_BUCKET.put(key, c.req.body);
-
   const pathArr = path.split('/');
-  let name = pathArr.pop();
-  name = isPage ? name.split('.')[0] : name;
+  const [name, ext] = pathArr.pop().split('.');
+
+  const isPage = ext === '.html';
+  const key = ext ? path : `${path}/.das`;
+  const results = await c.env.DAS_BUCKET.put(key, c.req.body);
 
   const parent = `/${pathArr.join('/')}`;
 
