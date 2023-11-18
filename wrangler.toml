@@ -4,5 +4,5 @@ account_id = "ec32767b7faa5f7325c21d238409d6f3"
 
 [[r2_buckets]]
 binding = "DAS_BUCKET"
-bucket_name = "das-sites"
-preview_bucket_name = "das-sites"
+bucket_name = "da-content"
+preview_bucket_name = "da-content-preview"
